@@ -20,6 +20,10 @@
         <div ng-switch-when="matrix" class="lf-top-section">
           <lf-section-matrix></lf-section-matrix>
         </div>
+        <!--grid-->
+        <div ng-switch-when="grid" class="lf-top-section">
+          <lf-section-grid></lf-section-grid>
+        </div>
         <!--vertical-->
         <div ng-switch-default>
           <!-- data row, column header -->
@@ -49,6 +53,9 @@
                 </div>
                 <div ng-switch-when="matrix">
                   <lf-section-matrix></lf-section-matrix>
+                </div>
+                <div ng-switch-when="grid">
+                  <lf-section-grid></lf-section-grid>
                 </div>
                 <div ng-switch-when="vertical">
                   <lf-table-item></lf-table-item>

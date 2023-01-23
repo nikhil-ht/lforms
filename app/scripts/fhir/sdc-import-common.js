@@ -636,6 +636,11 @@ function addCommonSDCImportFns(ns) {
             displayControl.questionLayout = "matrix";
           }
           break;
+         case 'grid':  // Not in STU3, but we'll accept it
+          if (lfItem.dataType === 'SECTION') {
+            displayControl.questionLayout = "grid";
+          }
+          break;
         default:
           displayControl = null;
       }
