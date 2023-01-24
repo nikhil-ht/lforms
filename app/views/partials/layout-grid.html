@@ -1,189 +1,242 @@
 <div class="lf-layout-matrix lf-table-item {{getSiblingStatus(item)}}">
   <div ng-attr-role="{{item.header ? 'heading' : undefined}}"
-       ng-attr-aria-level="{{item.header ? item._displayLevel+1 : undefined}}"
-       class="lf-form-matrix-table-title lf-de-label">
-    <span class="lf-question"><label id="label-{{ item._elementId }}"><ng-include src="'itemPrefixAndText.html'"></label></span>
+    ng-attr-aria-level="{{item.header ? item._displayLevel+1 : undefined}}"
+    class="lf-form-matrix-table-title lf-de-label">
+    <span class="lf-question"><label id="label-{{ item._elementId }}"><ng-include
+          src="'itemPrefixAndText.html'"></label></span>
     <span class="lf-item-code" ng-show="lfData.templateOptions.showQuestionCode">
-      <a ng-if="item._linkToDef" href="{{ item._linkToDef }}" target="_blank" rel="noopener noreferrer">[{{ item.questionCode }}]</a>
+      <a ng-if="item._linkToDef" href="{{ item._linkToDef }}" target="_blank" rel="noopener noreferrer">[{{
+        item.questionCode }}]</a>
       <span ng-if="!item._linkToDef">[{{ item.questionCode }}]</span>
     </span>
     <span ng-switch on="getCodingInstructionsDisplayType(item)" ng-if="item.codingInstructions">
       <span ng-switch-when="inline-html" class="lf-prompt" ng-bind-html="getTrustedCodingInstructions(item)"
-       id="help-{{ item._elementId }}"></span>
+        id="help-{{ item._elementId }}"></span>
       <span ng-switch-when="inline-escaped" class="lf-prompt" ng-bind="item.codingInstructions"
-       id="help-{{ item._elementId }}"></span>
+        id="help-{{ item._elementId }}"></span>
       <button ng-switch-when="popover-html" class="lf-help-button btn-sm" uib-popover-template="'popover.html'"
-              popover-trigger="focus" popover-placement="right"  popover-title="Instruction"
-              type="button" id="helpButton-{{item._elementId}}" aria-label="Help"
-              aria-describedby="label-{{ item._elementId }}">
+        popover-trigger="focus" popover-placement="right" popover-title="Instruction" type="button"
+        id="helpButton-{{item._elementId}}" aria-label="Help" aria-describedby="label-{{ item._elementId }}">
         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
       </button>
       <button ng-switch-when="popover-escaped" class="lf-help-button btn-sm" uib-popover="{{item.codingInstructions}}"
-              popover-trigger="focus" popover-placement="right"  popover-title="Instruction"
-              type="button" id="helpButton-{{item._elementId}}" aria-label="Help"
-              aria-describedby="label-{{ item._elementId }}">
+        popover-trigger="focus" popover-placement="right" popover-title="Instruction" type="button"
+        id="helpButton-{{item._elementId}}" aria-label="Help" aria-describedby="label-{{ item._elementId }}">
         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
       </button>
     </span>
     <button ng-if="item.copyrightNotice" id="copyright-{{item._elementId}}" type="button"
-            class="lf-copyright-button btn-sm" uib-popover="{{item.copyrightNotice}}"
-            popover-trigger="focus" popover-placement="right" popover-title="Copyright"
-            aria-label="Copyright notice" aria-describedby="label-{{ item._elementId }}">
+      class="lf-copyright-button btn-sm" uib-popover="{{item.copyrightNotice}}" popover-trigger="focus"
+      popover-placement="right" popover-title="Copyright" aria-label="Copyright notice"
+      aria-describedby="label-{{ item._elementId }}">
       <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span>
     </button>
     <button ng-if="isItemOptionPanelButtonShown(item)" type="button" class="lf-control-button btn-sm"
-            ng-click="hideShowItemOptionPanel(item)" aria-label="Item controls"
-            aria-describedby="label-{{item._elementId}}">
+      ng-click="hideShowItemOptionPanel(item)" aria-label="Item controls" aria-describedby="label-{{item._elementId}}">
       <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
     </button>
     <!-- TBD -->
     <lf-item-options></lf-item-options>
   </div>
   <table class="lf-form-matrix-table lf-form-table">
-      <colgroup>
-        <col class="lf-question">
-        <col ng-repeat="answer in item.items[0].answers">
-        <col class="other-answer" ng-if="item.items[0].dataType ==='CWE'">
-      </colgroup>
-      <thead>
-            <tr class="lf-">
-              <span ng-bind="createCustomHeaders(item)">
-              <th class="lf-question lf-form-table-header"></th>
-              <th class="lf-question lf-form-table-header">{{item.question}}</th>
-              <th ng-repeat="header in uniqueGridHeaders"
-                  class="lf-form-matrix-cell lf-form-table-header"
-                  id="answer-{{$index}}">{{header}}</th>
-              <th class="lf-form-matrix-cell-other lf-form-table-header" ng-if="item.items[0].dataType ==='CWE'"
-               id="otherAnswer">Other</th>
-              </span>
-            </tr> 
-      </thead>
-      <tbody>
-              <tr ng-repeat="subItem in item.items" role="radiogroup"
-                 ng-init="firstItem = item.items[0] ; item = subItem"
-                 aria-labeledby="label-{{subItem._elementId }}"
-                 aria-describedby="help-{{ subItem._parentItem._elementId }} help-{{ subItem._elementId }}">
-                 <td class="lf-question">
-                  <div class="lf-de-label">
-                    <span class="lf-question"><label id="label-{{ subItem._elementId }}"
-                     for="{{subItem._elementId}}"><ng-include src="'itemPrefixAndText.html'"></label></span>
-                    <span class="lf-item-code" ng-show="lfData.templateOptions.showQuestionCode">
-                      <a ng-if="subItem._linkToDef" href="{{ subItem._linkToDef }}" target="_blank" rel="noopener noreferrer">[{{ subItem.questionCode }}]</a>
-                      <span ng-if="!subItem._linkToDef">[{{ subItem.questionCode }}]</span>
-                    </span>
-                    <span ng-switch on="getCodingInstructionsDisplayType(subItem)" ng-if="subItem.codingInstructions">
-                      <span ng-switch-when="inline-html" id="help-{{subItem._elementId}}"
-                       class="lf-prompt" ng-bind-html="getTrustedCodingInstructions(subItem)"></span>
-                      <span ng-switch-when="inline-escaped" id="help-{{subItem._elementId}}"
-                       class="lf-prompt" ng-bind="subItem.codingInstructions"></span>
-                      <button ng-switch-when="popover-html" class="lf-help-button btn-sm" uib-popover-template="'popover.html'"
-                              popover-trigger="focus" popover-placement="right"  popover-title="Instruction"
-                              type="button" id="helpButton-{{subItem._elementId}}"
-                              aria-label="Help" aria-describedby="label-{{ subItem._elementId }}">
-                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                      </button>
-                      <button ng-switch-when="popover-escaped" class="lf-help-button btn-sm" uib-popover="{{subItem.codingInstructions}}"
-                              popover-trigger="focus" popover-placement="right"  popover-title="Instruction"
-                              type="button" id="helpButton-{{subItem._elementId}}" aria-label="Help"
-                              aria-describedby="label-{{ subItem._elementId }}">
-                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                      </button>
-                    </span>
-                    <button ng-if="subItem.copyrightNotice" id="copyright-{{subItem._elementId}}" type="button"
-                            class="lf-copyright-button btn-sm" uib-popover="{{subItem.copyrightNotice}}"
-                            popover-trigger="focus" popover-placement="right" popover-title="Copyright"
-                            aria-label="Copyright notice"
-                            aria-describedby="label-{{ subItem._elementId }}">
-                      <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span>
-                    </button>
-                  </div>
-                </td>
-           <td ng-repeat="cell in subItem.items"
-              class="hasTooltip {{getRowClass(cell)}} {{getSkipLogicClass(cell)}} {{getActiveRowClass(cell)}}"
-              ng-switch on="(!lfData._expressionProcessor._firstExpressionRunComplete && cell._hasListExpr) ? 'Loading List' : cell.dataType">
-            <ng-form name="innerForm2">
-              <div class="lf-form-item-data tooltipContainer">
-                <div class="tooltipContent" lf-validate="cell" ng-model="cell.value" ng-if="cell._hasValidation"></div>
-                <span ng-switch-when="" > </span>
-                <span ng-switch-when="Loading List">Loading list data...</span>
-                <input ng-switch-when="CNE" name="{{cell.question + '_' + $id}}" type="text"
-                       ng-model="cell.value"
-                       autocomplete-lhc="cell._autocompOptions"
-                       ng-disabled="cell._readOnly" placeholder="{{cell._toolTip}}"
-                       id="{{cell._elementId}}"
-                       aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
-                       ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
-                
-                       <input ng-switch-when="BL" name="{{cell._text}}" type="checkbox"
-                       ng-model="cell.value" placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly"
-                       id="{{cell._elementId}}" ng-focus="setActiveRow(cell)"
-                       ng-true-value="true" ng-false-value="false"
-                       ng-blur="activeRowOnBlur(cell)" aria-describedby="help-{{ cell._elementId }}">
-                <lf-attachment ng-switch-when="attachment" item="cell"
-                 create-attachment="createAttachment(cell)" id="attachment-{{cell._elementId}}"></lf-attachment>
+    <colgroup>
+      <col class="lf-question">
+      <col ng-repeat="answer in item.items[0].answers">
+      <col class="other-answer" ng-if="item.items[0].dataType ==='CWE'">
+    </colgroup>
+    <thead>
+      <tr class="lf-">
+        <span ng-bind="createCustomHeaders(item)">
+          <th class="lf-question lf-form-table-header"></th>
+          <th class="lf-question lf-form-table-header">{{item.question}}</th>
+          <th ng-repeat="header in uniqueGridHeaders" class="lf-form-matrix-cell lf-form-table-header"
+            id="answer-{{$index}}">{{header}}</th>
+        </span>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="subItem in item.items" ng-if="targetShown(subItem) && !subItem._isHiddenFromView" role="radiogroup"
+        ng-init="firstItem = item.items[0] ; item = subItem" aria-labeledby="label-{{subItem._elementId }}"
+        aria-describedby="help-{{ subItem._parentItem._elementId }} help-{{ subItem._elementId }}">
 
-                
-                       <input ng-switch-when="CWE" name="{{cell.question + '_' + $id}}" type="text"
-                       ng-model="cell.value"
-                       autocomplete-lhc="cell._autocompOptions"
-                       ng-disabled="cell._readOnly" placeholder="{{cell._toolTip}}"
-                       id="{{cell._elementId}}"
-                       aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
-                       ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
-                <input ng-switch-when="REAL" name="{{cell.question}}" type="text"
-                       ng-model="cell.value"
-                       placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly"
-                       id="{{cell._elementId}}"
-                       aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
-                       ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
-                <input ng-switch-when="INT" name="{{cell.question}}" type="text"
-                       ng-model="cell.value"
-                       placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly"
-                       id="{{cell._elementId}}"
-                       aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
-                       ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
-                <input ng-switch-when="DT" name="{{cell.question}}" type="text"
-                       ng-model="cell.value"
-                       lf-date="dateOptions" placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly"
-                       id="{{cell._elementId}}"
-                       aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
-                       ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
-               <!-- Gillardo boostrap datetime picker -->
-                <div ng-switch-when="DTM" class="lf-dtm-picker-block">
-                  <input name="{{cell.question}}" type="text" class="form-control"
-                         ng-model="cell.value"
-                         datetime-picker="{{uibDateTimePickerFormat}}" alt-input-formats="uibDatePickerAltFormats"
-                         is-open="isOpen" enable-time="true" close-on-date-selection="true" button-bar="uibDtmPickerButtonBar"
-                         datepicker-options="uibDatePickerOptions" timepicker-options="uibTimePickerOptions"
-                         placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly"
-                         id="{{cell._elementId}}"
-                         aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
-                         ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell); uibDtmPickerOnBlur('input')">
-                  <button type="button" class="ui-datepicker-trigger" ng-click="openUibDtmPicker($event)"></button>
-                </div>
-                <textarea ng-switch-when="TX" name="{{cell.question}}"
-                          ng-model="cell.value" ng-attr-placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly"
-                          id="{{cell._elementId}}"
-                          aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
-                          ng-keyup="autoExpand($event)" rows="1"
-                          ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)"></textarea>
-                <lf-attachment ng-switch-when="attachment" item="cell"
-                 create-attachment="createAttachment(item)"
-                 labelled-by=lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id
-                ></lf-attachment>
-                <input ng-switch-default name="{{cell.question}}" type="text"
-                       ng-model="cell.value" placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly"
-                       id="{{cell._elementId}}"
-                       aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
-                       ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
 
+        <td class="lf-question">
+          <div class="lf-de-label">
+            <span class="lf-question"><label id="label-{{ subItem._elementId }}"
+                for="{{subItem._elementId}}"><ng-include src="'itemPrefixAndText.html'"></label></span>
+            <span class="lf-item-code" ng-show="lfData.templateOptions.showQuestionCode">
+              <a ng-if="subItem._linkToDef" href="{{ subItem._linkToDef }}" target="_blank"
+                rel="noopener noreferrer">[{{
+                subItem.questionCode }}]</a>
+              <span ng-if="!subItem._linkToDef">[{{ subItem.questionCode }}]</span>
+            </span>
+            <span ng-switch on="getCodingInstructionsDisplayType(subItem)" ng-if="subItem.codingInstructions">
+              <span ng-switch-when="inline-html" id="help-{{subItem._elementId}}" class="lf-prompt"
+                ng-bind-html="getTrustedCodingInstructions(subItem)"></span>
+              <span ng-switch-when="inline-escaped" id="help-{{subItem._elementId}}" class="lf-prompt"
+                ng-bind="subItem.codingInstructions"></span>
+              <button ng-switch-when="popover-html" class="lf-help-button btn-sm" uib-popover-template="'popover.html'"
+                popover-trigger="focus" popover-placement="right" popover-title="Instruction" type="button"
+                id="helpButton-{{subItem._elementId}}" aria-label="Help"
+                aria-describedby="label-{{ subItem._elementId }}">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+              </button>
+              <button ng-switch-when="popover-escaped" class="lf-help-button btn-sm"
+                uib-popover="{{subItem.codingInstructions}}" popover-trigger="focus" popover-placement="right"
+                popover-title="Instruction" type="button" id="helpButton-{{subItem._elementId}}" aria-label="Help"
+                aria-describedby="label-{{ subItem._elementId }}">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+              </button>
+            </span>
+            <button ng-if="subItem.copyrightNotice" id="copyright-{{subItem._elementId}}" type="button"
+              class="lf-copyright-button btn-sm" uib-popover="{{subItem.copyrightNotice}}" popover-trigger="focus"
+              popover-placement="right" popover-title="Copyright" aria-label="Copyright notice"
+              aria-describedby="label-{{ subItem._elementId }}">
+              <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span>
+            </button>
+          </div>
+        </td>
+
+        <!-- 2nd column data -->
+        <td class="hasTooltip {{getRowClass(subItem)}} {{getSkipLogicClass(subItem)}} {{getActiveRowClass(subItem)}}"
+          ng-switch
+          on="(!lfData._expressionProcessor._firstExpressionRunComplete && subItem._hasListExpr) ? 'Loading List' : subItem.dataType">
+          <ng-form name="innerForm2">
+            <div class="lf-form-item-data tooltipContainer">
+              <div class="tooltipContent" lf-validate="subItem" ng-model="subItem.value" ng-if="subItem._hasValidation">
               </div>
-            </ng-form>
-          </td>
+              <span ng-switch-when=""> </span>
+              <span ng-switch-when="Loading List">Loading list data...</span>
+              <input ng-switch-when="CNE" name="{{subItem.question + '_' + $id}}" type="text" ng-model="subItem.value"
+                autocomplete-lhc="subItem._autocompOptions" ng-disabled="subItem._readOnly"
+                placeholder="{{subItem._toolTip}}" id="{{subItem._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(subItem)" ng-blur="activeRowOnBlur(subItem)">
 
-              </tr>
-              </tbody>
-    </table>
+              <input ng-switch-when="BL" name="{{subItem._text}}" type="checkbox" ng-model="subItem.value"
+                placeholder="{{subItem._toolTip}}" ng-disabled="subItem._readOnly" id="{{subItem._elementId}}"
+                ng-focus="setActiveRow(subItem)" ng-true-value="true" ng-false-value="false"
+                ng-blur="activeRowOnBlur(subItem)" aria-describedby="help-{{ subItem._elementId }}">
+              <lf-attachment ng-switch-when="attachment" item="subItem" create-attachment="createAttachment(subItem)"
+                id="attachment-{{subItem._elementId}}"></lf-attachment>
+
+
+              <input ng-switch-when="CWE" name="{{subItem.question + '_' + $id}}" type="text" ng-model="subItem.value"
+                autocomplete-lhc="subItem._autocompOptions" ng-disabled="subItem._readOnly"
+                placeholder="{{subItem._toolTip}}" id="{{subItem._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(subItem)" ng-blur="activeRowOnBlur(subItem)">
+              <input ng-switch-when="REAL" name="{{subItem.question}}" type="text" ng-model="subItem.value"
+                placeholder="{{subItem._toolTip}}" ng-disabled="subItem._readOnly" id="{{subItem._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(subItem)" ng-blur="activeRowOnBlur(subItem)">
+              <input ng-switch-when="INT" name="{{subItem.question}}" type="text" ng-model="subItem.value"
+                placeholder="{{subItem._toolTip}}" ng-disabled="subItem._readOnly" id="{{subItem._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(subItem)" ng-blur="activeRowOnBlur(subItem)">
+              <input ng-switch-when="DT" name="{{subItem.question}}" type="text" ng-model="subItem.value"
+                lf-date="dateOptions" placeholder="{{subItem._toolTip}}" ng-disabled="subItem._readOnly"
+                id="{{subItem._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(subItem)" ng-blur="activeRowOnBlur(subItem)">
+              <!-- Gillardo boostrap datetime picker -->
+              <div ng-switch-when="DTM" class="lf-dtm-picker-block">
+                <input name="{{subItem.question}}" type="text" class="form-control" ng-model="subItem.value"
+                  datetime-picker="{{uibDateTimePickerFormat}}" alt-input-formats="uibDatePickerAltFormats"
+                  is-open="isOpen" enable-time="true" close-on-date-selection="true" button-bar="uibDtmPickerButtonBar"
+                  datepicker-options="uibDatePickerOptions" timepicker-options="uibTimePickerOptions"
+                  placeholder="{{subItem._toolTip}}" ng-disabled="subItem._readOnly" id="{{subItem._elementId}}"
+                  aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                  ng-focus="setActiveRow(subItem)" ng-blur="activeRowOnBlur(subItem); uibDtmPickerOnBlur('input')">
+                <button type="button" class="ui-datepicker-trigger" ng-click="openUibDtmPicker($event)"></button>
+              </div>
+              <textarea ng-switch-when="TX" name="{{subItem.question}}" ng-model="subItem.value"
+                ng-attr-placeholder="{{subItem._toolTip}}" ng-disabled="subItem._readOnly" id="{{subItem._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-keyup="autoExpand($event)" rows="1" ng-focus="setActiveRow(subItem)"
+                ng-blur="activeRowOnBlur(subItem)"></textarea>
+              <lf-attachment ng-switch-when="attachment" item="subItem" create-attachment="createAttachment(item)"
+                labelled-by=lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id></lf-attachment>
+              <input ng-switch-default name="{{subItem.question}}" type="text" ng-model="subItem.value"
+                placeholder="{{subItem._toolTip}}" ng-disabled="subItem._readOnly" id="{{subItem._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(subItem)" ng-blur="activeRowOnBlur(subItem)">
+
+            </div>
+          </ng-form>
+        </td>
+
+
+        <!-- last row data -->
+        <td ng-repeat="cell in subItem.items" ng-if="targetShown(cell) && !cell._isHiddenFromView"
+          class="hasTooltip {{getRowClass(cell)}} {{getSkipLogicClass(cell)}} {{getActiveRowClass(cell)}}" ng-switch
+          on="(!lfData._expressionProcessor._firstExpressionRunComplete && cell._hasListExpr) ? 'Loading List' : cell.dataType">
+          <ng-form name="innerForm2">
+            <div class="lf-form-item-data tooltipContainer">
+              <div class="tooltipContent" lf-validate="cell" ng-model="cell.value" ng-if="cell._hasValidation"></div>
+              <span ng-switch-when=""> </span>
+              <span ng-switch-when="Loading List">Loading list data...</span>
+              <input ng-switch-when="CNE" name="{{cell.question + '_' + $id}}" type="text" ng-model="cell.value"
+                autocomplete-lhc="cell._autocompOptions" ng-disabled="cell._readOnly" placeholder="{{cell._toolTip}}"
+                id="{{cell._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
+
+              <input ng-switch-when="BL" name="{{cell._text}}" type="checkbox" ng-model="cell.value"
+                placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly" id="{{cell._elementId}}"
+                ng-focus="setActiveRow(cell)" ng-true-value="true" ng-false-value="false"
+                ng-blur="activeRowOnBlur(cell)" aria-describedby="help-{{ cell._elementId }}">
+              <lf-attachment ng-switch-when="attachment" item="cell" create-attachment="createAttachment(cell)"
+                id="attachment-{{cell._elementId}}"></lf-attachment>
+
+
+              <input ng-switch-when="CWE" name="{{cell.question + '_' + $id}}" type="text" ng-model="cell.value"
+                autocomplete-lhc="cell._autocompOptions" ng-disabled="cell._readOnly" placeholder="{{cell._toolTip}}"
+                id="{{cell._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
+              <input ng-switch-when="REAL" name="{{cell.question}}" type="text" ng-model="cell.value"
+                placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly" id="{{cell._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
+              <input ng-switch-when="INT" name="{{cell.question}}" type="text" ng-model="cell.value"
+                placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly" id="{{cell._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
+              <input ng-switch-when="DT" name="{{cell.question}}" type="text" ng-model="cell.value"
+                lf-date="dateOptions" placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly"
+                id="{{cell._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
+              <!-- Gillardo boostrap datetime picker -->
+              <div ng-switch-when="DTM" class="lf-dtm-picker-block">
+                <input name="{{cell.question}}" type="text" class="form-control" ng-model="cell.value"
+                  datetime-picker="{{uibDateTimePickerFormat}}" alt-input-formats="uibDatePickerAltFormats"
+                  is-open="isOpen" enable-time="true" close-on-date-selection="true" button-bar="uibDtmPickerButtonBar"
+                  datepicker-options="uibDatePickerOptions" timepicker-options="uibTimePickerOptions"
+                  placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly" id="{{cell._elementId}}"
+                  aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                  ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell); uibDtmPickerOnBlur('input')">
+                <button type="button" class="ui-datepicker-trigger" ng-click="openUibDtmPicker($event)"></button>
+              </div>
+              <textarea ng-switch-when="TX" name="{{cell.question}}" ng-model="cell.value"
+                ng-attr-placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly" id="{{cell._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-keyup="autoExpand($event)" rows="1" ng-focus="setActiveRow(cell)"
+                ng-blur="activeRowOnBlur(cell)"></textarea>
+              <lf-attachment ng-switch-when="attachment" item="cell" create-attachment="createAttachment(item)"
+                labelled-by=lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id></lf-attachment>
+              <input ng-switch-default name="{{cell.question}}" type="text" ng-model="cell.value"
+                placeholder="{{cell._toolTip}}" ng-disabled="cell._readOnly" id="{{cell._elementId}}"
+                aria-labelledby="{{lfData._horizontalTableInfo[item._horizontalTableId].columnHeaders[$index].id}}"
+                ng-focus="setActiveRow(cell)" ng-blur="activeRowOnBlur(cell)">
+
+            </div>
+          </ng-form>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
   <lf-repeating-button></lf-repeating-button>
 </div>
-
